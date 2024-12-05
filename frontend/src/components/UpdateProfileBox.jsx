@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { USER_API_END_POINTS } from "@/utils/constant";
 
-//hello world
+
 const UpdateProfileBox = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
