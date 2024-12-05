@@ -102,21 +102,22 @@ export const getAllJob = async (req, res) => {
 };
 
 
-//get job by id(student ke liye)
-export const getJobById=async(req, res)=>{
-    try {
-        const jobId = req.params.id;
-        const job = await JobModel.findById(jobId);
-        if(!job){
-            return res.status(404).json({message:'Job not found',success:false});
-        }
-        return res.status(200).json({job,success:true});
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({message:'Enternal server error',success:false});
+// Get job by id (student ke liye)
+export const getJobById = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const job = await JobModel.findById(jobId).populate({
+      path: "applications",
+    });
+    if (!job) {
+      return res.status(404).json({ message: "Job not found", success: false });
     }
-}
-
+    return res.status(200).json({ job, success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error", success: false });
+  }
+};
 
 
 //get all job for (Admin)

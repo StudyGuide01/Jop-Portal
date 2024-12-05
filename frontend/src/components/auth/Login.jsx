@@ -50,6 +50,7 @@ const Login = () => {
 
       if (response.data.success) {
         console.log(response.data.user);
+        navigate('/');
         dispatch(setUser(response.data.user));
         toast.success(response.data.message);
       }

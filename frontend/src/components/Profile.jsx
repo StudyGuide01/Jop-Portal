@@ -26,9 +26,9 @@ const Profile = () => {
                 <Avatar>
                   {/* Change the size to a valid value in Tailwind CSS */}
                   <AvatarImage
-                    src="https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg"
+                    src={user?.profile?.profilePhoto}
                     alt="profile/photo"
-                    className="w-24 h-24" // Valid Tailwind classes
+                    className="w-20 h-20 rounded-full" // Valid Tailwind classes
                   />
                 </Avatar>
               </div>
