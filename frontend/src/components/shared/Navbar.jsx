@@ -17,25 +17,25 @@ import { setUser } from "@/reduxStore/authSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
   // const user = false;
 
-  const handleLogout =async()=>{
+  const handleLogout = async () => {
     try {
       const response = await axios.get(`${USER_API_END_POINTS}/logout`);
-      if(response.data.success){
+      if (response.data.success) {
         dispatch(setUser(null));
-        navigate('/');
-        
+        navigate("/");
+
         toast.success(response.data.message);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
       toast.error(errorMessage);
     }
-
-  }
+  };
   return (
     <div className="bg-white shadow-md">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
@@ -50,15 +50,28 @@ const Navbar = () => {
         <div className="flex items-center gap-5">
           {/* Navbar Links (using react-router-dom Link) */}
           <ul className="flex font-medium items-center gap-5">
-            <li>
-              <Link to={"/"}> Home</Link>
-            </li>
-            <li>
-              <Link to={"/jobs"}>Jobs</Link>
-            </li>
-            <li>
-              <Link to={"/browse"}>Browse</Link>
-            </li>
+            {user && user.role === "recruiter" ? (
+              <>
+                <li>
+                  <Link to={"/admin/companies"}>Companies</Link>
+                </li>
+                <li>
+                  <Link to={"/admin/jobs"}>Jobs</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to={"/"}> Home</Link>
+                </li>
+                <li>
+                  <Link to={"/jobs"}>Jobs</Link>
+                </li>
+                <li>
+                  <Link to={"/browse"}>Browse</Link>
+                </li>
+              </>
+            )}
           </ul>
 
           {!user ? (
@@ -84,37 +97,44 @@ const Navbar = () => {
               </PopoverTrigger>
               <PopoverContent className="p-4 mt-3  bg-white shadow-lg rounded-md outline-none">
                 <div className="flex gap-3  space-y-2 flex-1">
-                 
-                 <Avatar className="cursor-pointer">
+                  <Avatar className="cursor-pointer">
                     <AvatarImage
-                      src={user?.profile?.profilePhoto}
+                      src={
+                        user?.profile?.profilePhoto
+                          ? user?.profile?.profilePhoto
+                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s"
+                      }
                       alt="@shadcn"
                       className="w-10 h-10 rounded-full mt-2"
                     />
                   </Avatar>
-                 
+
                   <div>
                     <h4 className="font-medium">{user?.fullName}</h4>
                     <p className="text-sm text-muted-foreground">
-                   {user?.profile?.bio}
+                      {user?.profile?.bio}
                     </p>
                   </div>
                 </div>
                 <hr />
                 <div className="flex flex-col my-3 gap-3">
-                  <div className="flex gap-2 items-center">
-                    {/* <Button>View Profile</Button> */}
-                   <User2 />
-                  <h2 className="hover:border-b-2 hover:border-gray-400 hover:pb-1 cursor-pointer">
-                  <Link to={'/profile'}>  View Profile </Link>
-                    </h2>
-                   
-                  </div>
+                  {user && user.role === "student" && (
+                    <div className="flex gap-2 items-center">
+                      {/* <Button>View Profile</Button> */}
+                      <User2 />
+                      <h2 className="hover:border-b-2 hover:border-gray-400 hover:pb-1 cursor-pointer">
+                        <Link to={"/profile"}> View Profile </Link>
+                      </h2>
+                    </div>
+                  )}
 
                   <div className="flex gap-2">
                     {/* <Button>Logout</Button> */}
                     <LogOut className="ml-1" />
-                    <h2 className="hover:border-b-2 hover:border-gray-400 hover:pb-1 cursor-pointer" onClick={handleLogout}>
+                    <h2
+                      className="hover:border-b-2 hover:border-gray-400 hover:pb-1 cursor-pointer"
+                      onClick={handleLogout}
+                    >
                       Logout
                     </h2>{" "}
                   </div>

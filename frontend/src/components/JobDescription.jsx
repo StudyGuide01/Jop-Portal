@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import useGetSingleJob from "@/hooks/useGetSingleJob";
 import { APPLICATION_API_END_POINTS, JOB_API_END_POINTS } from "@/utils/constant";
 import { setSingleJob } from "@/reduxStore/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "sonner";
+
 
 const JobDescription = () => {
   const dispatch = useDispatch();
@@ -85,7 +86,8 @@ const JobDescription = () => {
             </Badge>
           </div>
         </div>
-        <Button
+
+        {user  ?  <Button
           onClick={isApplied ? null : applyJob}
           disabled={isApplied}
           className={`rounded-lg ${
@@ -95,7 +97,10 @@ const JobDescription = () => {
           }`}
         >
           {isApplied ? "Already Applied" : "Apply Now"}
-        </Button>
+        </Button> :<Button>
+         <Link to='/login'>Please do login</Link>
+        </Button>}
+      
       </div>
 
       <h1 className="py-2 my-3 border-b-2 border-b-gray-300 font-medium">
